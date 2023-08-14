@@ -1,3 +1,4 @@
+# pip install pyautogui
 import pyautogui
 import time
 
