@@ -1,7 +1,7 @@
 import openpyxl
 import random
 
-# 기존 엑셀 파일 불러오기
+# 새로운 엑셀 파일 생성
 wb = openpyxl.Workbook()
 
 ws = wb.active
@@ -30,4 +30,4 @@ for i in range(random.randint(5,10)): # 매출 데이터 (행) 5~10개
         
     ws.append([i+1, name, price, random.randint(1,5), f'= C{i+2} * D{i+2}'])
     
-wb.save("Data/03.엑셀자동화/쇼핑몰.xlsx")
+wb.save("Data/03.엑셀자동화/hi.xlsx")
