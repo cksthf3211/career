@@ -1,7 +1,10 @@
+import requests
 from bs4 import BeautifulSoup
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+
+import pyautogui
 
 import time
 
@@ -17,22 +20,22 @@ chrome_options.add_argument('--log-level=3')
 # C드라이버에 경로 넣지 않아야함
 driver = webdriver.Chrome(options=chrome_options)
 
-url = "https://www.naver.com/"
+keyword = pyautogui.prompt('검색어를 입력하세요  >>> ')
+
+url = f"https://search.naver.com/search.naver?where=news&sm=tab_jum&query={keyword}"
 
 # 네이버 서버에 대화 시도
 driver.get(url)
 
-# load 대기
-time.sleep(5)
-
 # 네이버에서 html 줌
 html = driver.page_source
 
-# html 번역선생님으로 수프만듬 / 파싱
 soup = BeautifulSoup(html, 'html.parser')
 
-# class 선택자
-word = soup.select_one("a.ContentHeaderView-module__tab_text___IuWnG")
+links = soup.select('.news_tit')
 
-# 텍스트 요소만 출력
-print(word.text)
+for link in links:
+    title = link.text       # 태그 안에 텍스트요소를 가져옴
+    url = link.attrs['href']# href의 속성값을 가져옴
+
+    print(title, url)
