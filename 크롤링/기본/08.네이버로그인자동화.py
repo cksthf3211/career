@@ -17,6 +17,7 @@ chrome_options.add_experimental_option("detach", True)
 # 불필요 메세지 없애기
 chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
 
+# 크롬 드라이버 자동 업데이트
 serveice = Service(executable_path=ChromeDriverManager().install())
 driver = webdriver.Chrome(service=serveice, options=chrome_options)
 
