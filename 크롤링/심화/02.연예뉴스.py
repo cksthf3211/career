@@ -47,7 +47,7 @@ html = browser.page_source
 soup = BeautifulSoup(html, 'html.parser')
 
 articles = soup.select("div.info_group") # 뉴스 기사 div 10개 추출
-
+        
 for article in articles:
     links = article.select("a.info")
     if len(links) >= 2: # 링크가 2개 이상이면
@@ -55,19 +55,20 @@ for article in articles:
         
         # 다시 한번 받아옴
         browser.get(url)
+        news_url = browser.current_url
         html = browser.page_source
         soup = BeautifulSoup(html, 'html.parser')
         
         
         # 연예뉴스라면 -> ? div 모양이 다름
-        if 'entertain' in url:
+        if 'entertain' in news_url:
             title = soup.select_one(".end_tit")
             content = soup.select_one('#articeBody')
         else:
             title = soup.select_one("#title_area")
             content = soup.select_one('#dic_area') # 해당 링크 본문의 아이디값 가져옴
             
-        print("=============링크==========\n", url)
+        print("=============링크==========\n", news_url)
         print("=============제목==========\n", title.text.strip())
         print("=============내용==========\n", content.text.strip())
         time.sleep(0.7)
