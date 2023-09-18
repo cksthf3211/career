@@ -21,13 +21,16 @@ chrome_options.add_experimental_option("detach", True)
 chrome_options.add_argument('--headless') # headless 모드 활성화
 chrome_options.add_argument('--disable-gpu') # GPU 가속 비활성화
 
+# Mozilla 웹 브라우저에서 온 것처럼 인식 / 자동화된 요청을 감지하고 차단하는 것을 우회
+chrome_options.add_argument("--user-agent=Mozilla/5.0")
+
 # 불필요 메세지 없애기
 chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
 # 드라이버 업데이트
-serveice = Service(executable_path=ChromeDriverManager().install())
+service = Service(executable_path=ChromeDriverManager().install())
 
 # 옵션 적용
-browser = webdriver.Chrome(service=serveice, options=chrome_options)
+browser = webdriver.Chrome(service=service, options=chrome_options)
 
 news = pyautogui.prompt('뉴스기사 입력 >>> ')
 print(f'{news} 검색')
@@ -55,8 +58,18 @@ for article in articles:
         html = browser.page_source
         soup = BeautifulSoup(html, 'html.parser')
         
-        content = soup.select_one('#dic_area') # 해당 링크 본문의 아이디값 가져옴
-        print(content.text)
+        
+        # 연예뉴스라면 -> ? div 모양이 다름
+        if 'entertain' in url:
+            title = soup.select_one(".end_tit")
+            content = soup.select_one('#articeBody')
+        else:
+            title = soup.select_one("#title_area")
+            content = soup.select_one('#dic_area') # 해당 링크 본문의 아이디값 가져옴
+            
+        print("=============링크==========\n", url)
+        print("=============제목==========\n", title.text.strip())
+        print("=============내용==========\n", content.text.strip())
         time.sleep(0.7)
         
 print('\nDvlp.H.Y.C.Sol\n')
