@@ -59,18 +59,31 @@ for article in articles:
         html = browser.page_source
         soup = BeautifulSoup(html, 'html.parser')
         
-        
         # 연예뉴스라면 -> ? div 모양이 다름
+        # 링크 앞부분에 무엇이 포함되어있는지?
         if 'entertain' in news_url:
             title = soup.select_one(".end_tit")
             content = soup.select_one('#articeBody')
+        
+        # 불필요 내용 삭제하는 기능 추가함
+        elif 'sports' in news_url:
+            title = soup.select_one("h4.title") # 앞에 h4가 없으면 50개 나옴
+            content = soup.select_one('#newsEndContents')
+            # 본문 내용 안에 불필요한 내용, 공백 삭제
+            divs = content.select("div")
+            for div in divs:
+                div.decompose()
+            paragraphs = content.select("p")
+            for paragraph in paragraphs:
+                paragraph.decompose()
+                
         else:
             title = soup.select_one("#title_area")
             content = soup.select_one('#dic_area') # 해당 링크 본문의 아이디값 가져옴
             
         print("=============링크==========\n", news_url)
         print("=============제목==========\n", title.text.strip())
-        print("=============내용==========\n", content.text.strip())
+        print("=============내용==========\n", content.text.strip()) # br제거해야함
         time.sleep(0.7)
         
 print('\nDvlp.H.Y.C.Sol\n')
