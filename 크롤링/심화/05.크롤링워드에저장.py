@@ -3,7 +3,10 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+
 from bs4 import BeautifulSoup
+from docx import Document
+from docx.enum.text import WD_BREAK # 쪽넘김
 
 # 크롬 드라이버 자동 업데이트
 from webdriver_manager.chrome import ChromeDriverManager
@@ -32,10 +35,13 @@ service = Service(executable_path=ChromeDriverManager().install())
 # 옵션 적용
 browser = webdriver.Chrome(service=service, options=chrome_options)
 
+document = Document()
+
 news = pyautogui.prompt('뉴스기사 입력 >>> ')
 page = pyautogui.prompt('몇 페이지까지 크롤링 할까요? >>> ')
 
 print(f'{news}를 {page}페이지 검색')
+
 
 page_num = 1 #
 for i in range(1, int(page) * 10, 10):
@@ -91,8 +97,14 @@ for i in range(1, int(page) * 10, 10):
             print("=============링크==========\n", news_url)
             print("=============제목==========\n", title.text.strip())
             print("=============내용==========\n", content.text.strip()) # br제거해야함
+            
+            document.add_heading(title.text.strip(), level=0) # 타이틀
+            document.add_paragraph(news_url)                  # 링크
+            document.add_paragraph(content.text.strip())      # 본문
+            document.add_paragraph().add_run().add_break(WD_BREAK.PAGE) # 쪽넘김
             time.sleep(0.7)
             
     page_num += 1
-        
+
+document.save(f'크롤링/심화/{news}_result.docx')
 print('\nDvlp.H.Y.C.Sol\n')

@@ -8,6 +8,9 @@ from bs4 import BeautifulSoup
 # 크롬 드라이버 자동 업데이트
 from webdriver_manager.chrome import ChromeDriverManager
 
+from openpyxl import Workbook
+from openpyxl.styles import Alignment
+
 import time
 import pyautogui
 import pyperclip
@@ -35,12 +38,24 @@ browser = webdriver.Chrome(service=service, options=chrome_options)
 news = pyautogui.prompt('뉴스기사 입력 >>> ')
 page = pyautogui.prompt('몇 페이지까지 크롤링 할까요? >>> ')
 
+# 엑셀 생성
+wb = Workbook()
+ws = wb.create_sheet(news)
+del wb['Sheet']
+
+# 열 너비 조정
+ws.column_dimensions['A'].width = 50
+ws.column_dimensions['B'].width = 50
+ws.column_dimensions['C'].width = 100
+
 print(f'{news}를 {page}페이지 검색')
+
+# 행 번호
+xlsx_num = 1
 
 page_num = 1 #
 for i in range(1, int(page) * 10, 10):
     print(f"=============== {page_num} 페이지 크롤링 중 ==============")
-    
     
     # 웹페이지 해당 주소 이동
     path = f'https://search.naver.com/search.naver?where=news&sm=tab_jum&query={news}&start={i}'
@@ -91,8 +106,20 @@ for i in range(1, int(page) * 10, 10):
             print("=============링크==========\n", news_url)
             print("=============제목==========\n", title.text.strip())
             print("=============내용==========\n", content.text.strip()) # br제거해야함
+            
+            ws[f'A{xlsx_num}'] = news_url
+            ws[f'B{xlsx_num}'] = title.text.strip()
+            ws[f'C{xlsx_num}'] = content.text.strip()
+            
+            # 줄바꿈
+            ws[f'C{xlsx_num}'].alignment = Alignment(wrap_text=True)
+            
+            # 한칸 내려가기
+            xlsx_num += 1
+            
             time.sleep(0.7)
             
     page_num += 1
-        
+    
+wb.save(f'크롤링/심화/{news}_result.xlsx')
 print('\nDvlp.H.Y.C.Sol\n')
