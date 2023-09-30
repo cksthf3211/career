@@ -106,7 +106,7 @@ for i in range(1, int(page) * 10, 10):
     
     page_num += 1
     
-print(" ")
+print("\n")
 print(f"{article_num}개 기사 크롤링 완료")
 print('\nDvlp.H.Y.C.Sol\n')
 # 전체 본문내용 클립보드에 복사
