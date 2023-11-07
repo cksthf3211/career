@@ -43,8 +43,7 @@ while True:
         os.mkdir(folder_path)
         break
 
-path = f'https://www.google.co.kr/search?tbm=isch&hl=ko&source=hp&biw=&bih=&q={keyword}' # 구글
-# path = f'https://search.naver.com/search.naver?where=image&sm=tab_jum&query={keyword}' # 네이버
+path = f'https://www.google.com/search?q={keyword}&sca_esv=580120143&hl=ko&tbm=isch&sxsrf=AM9HkKmDd46NefxcclWk71YsVWobVHQsIw:1699362285857&source=lnms&sa=X&ved=2ahUKEwicopLr-bGCAxXV-mEKHbygCZgQ_AUoAXoECAMQAw&biw=1455&bih=705&dpr=1.1' # 구글
 browser.implicitly_wait(5)
 browser.maximize_window()
 browser.get(path)
@@ -62,18 +61,17 @@ while True:
     
     # 스크롤 높이가 맨 아래와 같다면 무한루프 탈출
     if after_h == before_h:
-
         break
-    
+
     # 스크롤 높이 업데이트
     before_h = after_h
 
-imgs = browser.find_elements(By.CSS_SELECTOR, '.DS1iW')
+imgs = browser.find_elements(By.CSS_SELECTOR, '.rg_i.Q4LuWd')
 for i, img in enumerate(imgs, 1):
     # 각 이미지 태그의 주소 추출
     link = img.get_attribute('src')
     print(i, link)
 
 
-        
-print('\nDvlp.H.Y.C.Sol\nEnglishName : Jason')
+        # LZ4I
+print('\nDvlp.H.Y.C.Sol\nJason')

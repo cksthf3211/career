@@ -34,11 +34,16 @@ browser = webdriver.Chrome(service=service, options=chrome_options)
 
 keyword = pyautogui.prompt('검색어를 입력하세요.')
 
-# 폴더 만들기
-if not os.path.exists(f'크롤링/심화3/{keyword}모음'):
-    os.mkdir(f'크롤링/심화3/{keyword}모음')
+cnt = 0
+# 폴더 만들기 (이미 존재하면 += 1)
+while True: 
+    cnt += 1
+    folder_path = f'크롤링/심화3/{keyword}{cnt}모음'
+    if not os.path.exists(folder_path):
+        os.mkdir(folder_path)
+        break
 
-path = f'https://www.google.co.kr/search?tbm=isch&hl=ko&source=hp&biw=&bih=&q={keyword}' # 구글
+path = f'https://www.google.com/search?q={keyword}tbm=isch&ved=2ahUKEwjhyNnz9LGCAxVUMN4KHQ8NBhYQ2-cCegQIABAA&oq=%EA%B0%95%EC%95%84%EC%A7%80&gs_lcp=CgNpbWcQAzIECCMQJzIICAAQgAQQsQMyCAgAEIAEELEDMggIABCABBCxAzIICAAQgAQQsQMyCAgAEIAEELEDMggIABCABBCxAzIICAAQgAQQsQMyBQgAEIAEMgUIABCABFAAWABg7AFoAHAAeACAAWCIAWCSAQExmAEAqgELZ3dzLXdpei1pbWfAAQE&sclient=img&ei=wTBKZaHkJdTg-AaPmpiwAQ&bih=705&biw=1455' # 구글
 # path = f'https://search.naver.com/search.naver?where=image&sm=tab_jum&query={keyword}' # 네이버
 browser.implicitly_wait(5)
 browser.maximize_window()
@@ -63,14 +68,14 @@ while True:
     before_h = after_h
 
 # 이미지 태그 추출
-imgs = browser.find_elements(By.CSS_SELECTOR, '._image._listImage')
+imgs = browser.find_elements(By.CSS_SELECTOR, '.rg_i Q4LuWd')
 
 for i, img in enumerate(imgs, 1):
     # 각 이미지 태그의 주소 추출
     link = img.get_attribute('src')
     
     # 이미지 저장
-    urllib.request.urlretrieve(link, f'크롤링/심화2/{keyword}모음/{i}.png')
+    # urllib.request.urlretrieve(link, f'크롤링/심화2/{keyword}모음/{i}.png')
     
     print(f'img {i}개: {link}')
         
