@@ -1,13 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
 import urllib.request
-
-# 크롬 드라이버 자동 업데이트
-from webdriver_manager.chrome import ChromeDriverManager
 
 import time
 import pyautogui
@@ -22,16 +17,13 @@ chrome_options.add_experimental_option("detach", True)
 # chrome_options.add_argument('--disable-gpu') # GPU 가속 비활성화
 
 # Mozilla 웹 브라우저에서 온 것처럼 인식 / 자동화된 요청을 감지하고 차단하는 것을 우회
-chrome_options.add_argument("--user-agent=Mozilla/5.0")
+# chrome_options.add_argument("--user-agent=Mozilla/5.0")
 
 # 불필요 메세지 없애기
 chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
-# 드라이버 업데이트
-service = Service(executable_path=ChromeDriverManager().install())
 
 # 옵션 적용
-browser = webdriver.Chrome(service=service, options=chrome_options)
-
+browser = webdriver.Chrome(options=chrome_options)
 keyword = pyautogui.prompt('검색어를 입력하세요.')
 
 cnt = 0
@@ -43,7 +35,7 @@ while True:
         os.mkdir(folder_path)
         break
 
-path = f'https://www.google.com/search?q={keyword}&sca_esv=580120143&hl=ko&tbm=isch&sxsrf=AM9HkKmDd46NefxcclWk71YsVWobVHQsIw:1699362285857&source=lnms&sa=X&ved=2ahUKEwicopLr-bGCAxXV-mEKHbygCZgQ_AUoAXoECAMQAw&biw=1455&bih=705&dpr=1.1' # 구글
+path = f'https://www.google.com/search?q={keyword}&sca_esv=581612012&tbm=isch&sxsrf=AM9HkKnRu6DCGGz23e29xT4BSB7Hq95zgA:1699754235522&source=lnms&sa=X&ved=2ahUKEwiboaf7rb2CAxWJfd4KHWkWA9MQ_AUoAXoECAQQAw&biw=1552&bih=737&dpr=1.65' # 구글
 browser.implicitly_wait(5)
 browser.maximize_window()
 browser.get(path)
@@ -67,11 +59,4 @@ while True:
     before_h = after_h
 
 imgs = browser.find_elements(By.CSS_SELECTOR, '.rg_i.Q4LuWd')
-for i, img in enumerate(imgs, 1):
-    # 각 이미지 태그의 주소 추출
-    link = img.get_attribute('src')
-    print(i, link)
-
-
-        # LZ4I
-print('\nDvlp.H.Y.C.Sol\nJason')
+print(imgs)
