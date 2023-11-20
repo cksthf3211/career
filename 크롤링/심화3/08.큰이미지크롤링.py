@@ -67,11 +67,7 @@ for i, img in enumerate(imgs, 1):
     time.sleep(1)
     
     # 큰 이미지 주소 추출
-    if i == 1:
-        target = browser.find_elements(By.CSS_SELECTOR, 'img.sFlh5c.pT0Scc.iPVvYb')[0]
-    else:
-        target = browser.find_elements(By.CSS_SELECTOR, 'img.sFlh5c.pT0Scc.iPVvYb')[1]
-        # IndexError: list index out of range
+    target = browser.find_element(By.CSS_SELECTOR, 'img.sFlh5c.pT0Scc.iPVvYb')
     
     img_src = target.get_attribute('src')
         
